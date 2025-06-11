@@ -1,5 +1,8 @@
 package br.com.alura.adopet.api.service;
 
+import br.com.alura.adopet.api.dto.CriacaoAbrigoDto;
+import br.com.alura.adopet.api.dto.CriacaoPetDto;
+import br.com.alura.adopet.api.dto.DetalhesPetDto;
 import br.com.alura.adopet.api.exception.ValidacaoException;
 import br.com.alura.adopet.api.model.Abrigo;
 import br.com.alura.adopet.api.model.Pet;
@@ -20,34 +23,36 @@ public class AbrigoService {
         return repository.findAll();
     }
 
-    public void cadastrar(Abrigo abrigo) {
-        boolean nomeJaCadastrado = repository.existsByNome(abrigo.getNome());
-        boolean telefoneJaCadastrado = repository.existsByTelefone(abrigo.getTelefone());
-        boolean emailJaCadastrado = repository.existsByEmail(abrigo.getEmail());
+    public void cadastrar(CriacaoAbrigoDto dto) {
+        boolean nomeJaCadastrado = repository.existsByNome(dto.nome());
+        boolean telefoneJaCadastrado = repository.existsByTelefone(dto.telefone());
+        boolean emailJaCadastrado = repository.existsByEmail(dto.email());
 
         if (nomeJaCadastrado || telefoneJaCadastrado || emailJaCadastrado) {
             throw new ValidacaoException("Dados já cadastrados para outro abrigo!");
         } else {
+            Abrigo abrigo = new Abrigo(dto);
             repository.save(abrigo);
         }
     }
 
-    public List<Pet> listarPets(String idOuNome) {
+    public List<DetalhesPetDto> listarPets(String idOuNome) {
         try {
             Long id = Long.parseLong(idOuNome);
-            return repository.getReferenceById(id).getPets();
+            return repository.getReferenceById(id).getPets().stream().map(DetalhesPetDto::new).toList();
         } catch (EntityNotFoundException enfe) {
             throw new EntityNotFoundException(enfe);
         } catch (NumberFormatException e) {
             try {
-                return repository.findByNome(idOuNome).getPets();
+                return repository.findByNome(idOuNome).getPets().stream().map(DetalhesPetDto::new).toList();
             } catch (EntityNotFoundException enfe) {
                 throw new EntityNotFoundException(enfe);
             }
         }
     }
 
-    public void cadastrarPet(String idOuNome, Pet pet) {
+    public void cadastrarPet(String idOuNome, CriacaoPetDto dto) {
+        Pet pet = new Pet(dto);
         try {
             Long id = Long.parseLong(idOuNome);
             Abrigo abrigo = repository.getReferenceById(id);
