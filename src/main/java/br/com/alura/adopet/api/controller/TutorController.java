@@ -1,5 +1,7 @@
 package br.com.alura.adopet.api.controller;
 
+import br.com.alura.adopet.api.dto.AtualizaCadastroTutorDto;
+import br.com.alura.adopet.api.dto.CadastroDeTutorDto;
 import br.com.alura.adopet.api.exception.ValidacaoException;
 import br.com.alura.adopet.api.model.Tutor;
 import br.com.alura.adopet.api.repository.TutorRepository;
@@ -19,9 +21,9 @@ public class TutorController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<String> cadastrar(@RequestBody @Valid Tutor tutor) {
+    public ResponseEntity<String> cadastrar(@RequestBody @Valid CadastroDeTutorDto dto) {
         try {
-            this.tutorService.cadastrar(tutor);
+            this.tutorService.cadastrar(dto);
             return ResponseEntity.ok("Tutor cadastrado com sucesso");
         } catch (ValidacaoException exception) {
             return ResponseEntity.badRequest().body(exception.getMessage());
@@ -30,8 +32,8 @@ public class TutorController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity<String> atualizar(@RequestBody @Valid Tutor tutor) {
-        this.tutorService.atualizar(tutor);
+    public ResponseEntity<String> atualizar(@RequestBody @Valid AtualizaCadastroTutorDto dto) {
+        this.tutorService.atualizar(dto);
         return ResponseEntity.ok().build();
     }
 
