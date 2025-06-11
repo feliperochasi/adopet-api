@@ -2,9 +2,8 @@ package br.com.alura.adopet.api.controller;
 
 import br.com.alura.adopet.api.dto.CriacaoAbrigoDto;
 import br.com.alura.adopet.api.dto.CriacaoPetDto;
+import br.com.alura.adopet.api.dto.DetalhesAbrigoDto;
 import br.com.alura.adopet.api.dto.DetalhesPetDto;
-import br.com.alura.adopet.api.model.Abrigo;
-import br.com.alura.adopet.api.model.Pet;
 import br.com.alura.adopet.api.service.AbrigoService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -23,7 +22,7 @@ public class AbrigoController {
     private AbrigoService abrigoService;
 
     @GetMapping
-    public ResponseEntity<List<Abrigo>> listar() {
+    public ResponseEntity<List<DetalhesAbrigoDto>> listar() {
         return ResponseEntity.ok(abrigoService.listar());
     }
 

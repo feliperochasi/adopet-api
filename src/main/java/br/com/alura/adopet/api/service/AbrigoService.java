@@ -2,6 +2,7 @@ package br.com.alura.adopet.api.service;
 
 import br.com.alura.adopet.api.dto.CriacaoAbrigoDto;
 import br.com.alura.adopet.api.dto.CriacaoPetDto;
+import br.com.alura.adopet.api.dto.DetalhesAbrigoDto;
 import br.com.alura.adopet.api.dto.DetalhesPetDto;
 import br.com.alura.adopet.api.model.Abrigo;
 import br.com.alura.adopet.api.model.Pet;
@@ -22,8 +23,8 @@ public class AbrigoService {
     @Autowired
     private List<ValidacaoCadastroAbrigo> validacoes;
 
-    public List<Abrigo> listar() {
-        return repository.findAll();
+    public List<DetalhesAbrigoDto> listar() {
+        return repository.findAll().stream().map(DetalhesAbrigoDto::new).toList();
     }
 
     public void cadastrar(CriacaoAbrigoDto dto) {
