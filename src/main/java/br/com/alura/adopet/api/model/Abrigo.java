@@ -13,20 +13,15 @@ public class Abrigo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "nome")
     private String nome;
 
-   @Column(name = "telefone")
     private String telefone;
 
-    @Column(name = "email")
     private String email;
 
     @OneToMany(mappedBy = "abrigo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference("abrigo_pets")
     private List<Pet> pets;
 
     public Abrigo(CriacaoAbrigoDto dto) {
@@ -82,9 +77,5 @@ public class Abrigo {
 
     public List<Pet> getPets() {
         return pets;
-    }
-
-    public void setPets(List<Pet> pets) {
-        this.pets = pets;
     }
 }

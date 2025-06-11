@@ -13,11 +13,7 @@ public class ValidacaoAbrigoJaCadastrado implements ValidacaoCadastroAbrigo {
     private AbrigoRepository repository;
 
     public void validar(CriacaoAbrigoDto dto) {
-        boolean nomeJaCadastrado = repository.existsByNome(dto.nome());
-        boolean telefoneJaCadastrado = repository.existsByTelefone(dto.telefone());
-        boolean emailJaCadastrado = repository.existsByEmail(dto.email());
-
-        if (nomeJaCadastrado || telefoneJaCadastrado || emailJaCadastrado) {
+        if (repository.existsByNomeOrTelefoneOrEmail(dto.nome(), dto.telefone(), dto.email())) {
             throw new ValidacaoException("Dados já cadastrados para outro abrigo!");
         }
     }
