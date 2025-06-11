@@ -1,5 +1,8 @@
 package br.com.alura.adopet.api.controller;
 
+import br.com.alura.adopet.api.dto.CriacaoAbrigoDto;
+import br.com.alura.adopet.api.dto.CriacaoPetDto;
+import br.com.alura.adopet.api.dto.DetalhesPetDto;
 import br.com.alura.adopet.api.model.Abrigo;
 import br.com.alura.adopet.api.model.Pet;
 import br.com.alura.adopet.api.service.AbrigoService;
@@ -26,9 +29,9 @@ public class AbrigoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<String> cadastrar(@RequestBody @Valid Abrigo abrigo) {
+    public ResponseEntity<String> cadastrar(@RequestBody @Valid CriacaoAbrigoDto dto) {
         try {
-            this.abrigoService.cadastrar(abrigo);
+            this.abrigoService.cadastrar(dto);
             return ResponseEntity.ok("Abrigo cadastrado com sucesso");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -36,7 +39,7 @@ public class AbrigoController {
     }
 
     @GetMapping("/{idOuNome}/pets")
-    public ResponseEntity<List<Pet>> listarPets(@PathVariable String idOuNome) {
+    public ResponseEntity<List<DetalhesPetDto>> listarPets(@PathVariable String idOuNome) {
         try {
             return ResponseEntity.ok().body(this.abrigoService.listarPets(idOuNome));
         } catch (EntityNotFoundException enfe){
@@ -46,9 +49,9 @@ public class AbrigoController {
 
     @PostMapping("/{idOuNome}/pets")
     @Transactional
-    public ResponseEntity<String> cadastrarPet(@PathVariable String idOuNome, @RequestBody @Valid Pet pet) {
+    public ResponseEntity<String> cadastrarPet(@PathVariable String idOuNome, @RequestBody @Valid CriacaoPetDto dto) {
         try {
-            this.abrigoService.cadastrarPet(idOuNome, pet);
+            this.abrigoService.cadastrarPet(idOuNome, dto);
             return ResponseEntity.ok("Pet cadastrado com sucesso");
         } catch (EntityNotFoundException enfe) {
             return ResponseEntity.notFound().build();
